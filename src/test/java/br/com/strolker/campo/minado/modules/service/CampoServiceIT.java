@@ -16,6 +16,7 @@ class CampoServiceIT {
 	private Campo central;
 	private CampoService campoService;
 	
+	
 	@BeforeEach
 	void inicializarCampoCentral() {
 		central = new Campo(2, 3); 
