@@ -16,6 +16,7 @@ public class Campo {
 	public Campo(int linha, int coluna){
 		this.linha = linha;
 		this.coluna = coluna;
+		this.statusCampo = StatusCampo.FECHADO;
 	}
 
 	public List<Campo> getVizinhanca() {
@@ -56,5 +57,13 @@ public class Campo {
 
 	public int getColuna() {
 		return coluna;
+	}
+	
+	public boolean isStatusCampoAberto() {
+		return statusCampo.equals(StatusCampo.ABERTO);
+	}
+	
+	public boolean isStatusCampoFechado() {
+		return statusCampo.equals(StatusCampo.FECHADO);
 	}
 }

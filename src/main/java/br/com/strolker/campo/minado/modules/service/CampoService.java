@@ -23,15 +23,15 @@ public class CampoService {
 		return adicionado;
 	}
 	
-	public void alterarMarcado(Campo campo) {
-		if(campo.getStatusCampo().equals(StatusCampo.FECHADO)) {
+	public void alterarMarcacao(Campo campo) {
+		if(campo.isStatusCampoFechado()) {
 			campo.setMarcado(!campo.isMarcado());
 		}
 	}
 	
 	public boolean abrirCampo(Campo campo) {
 		
-		if(campo.getStatusCampo().equals(StatusCampo.FECHADO) &&
+		if(campo.isStatusCampoFechado() &&
 		   Boolean.FALSE.equals(campo.isMarcado())) {
 			campo.setStatusCampo(StatusCampo.ABERTO);
 			
@@ -47,6 +47,12 @@ public class CampoService {
 		}
 		
 		return false;
+	}
+	
+	public void minarCampo(Campo campo) {
+		if(campo.isStatusCampoFechado()) {
+			campo.setMinado(true);
+		}
 	}
 	
 	private boolean isVizinhancaSegura(Campo campo) {
