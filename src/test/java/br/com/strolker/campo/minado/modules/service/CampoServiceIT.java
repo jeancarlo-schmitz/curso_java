@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import main.java.br.com.strolker.campo.minado.modules.domain.Campo;
-import main.java.br.com.strolker.campo.minado.modules.domain.StatusCampo;
+import main.java.br.com.strolker.campo.minado.modules.domain.Tabuleiro;
 import main.java.br.com.strolker.campo.minado.modules.exception.ExplosaoException;
 import main.java.br.com.strolker.campo.minado.modules.service.CampoService;
 
@@ -21,11 +21,13 @@ class CampoServiceIT {
 	
 	private Campo central;
 	private CampoService campoService;
+	private Tabuleiro tabuleiro;
 	
 	@BeforeEach
 	void inicializarCampoCentral() {
 		central = new Campo(2, 3); 
 		campoService = new CampoService();
+		tabuleiro = new Tabuleiro(6, 6, 6);
 	}
 
 	@Test
@@ -217,9 +219,252 @@ class CampoServiceIT {
 		assertTrue(vizinhoDoVizinho2Minado.isStatusCampoFechado());
 	}
 	
+	@Test
+	void isObjetivoCampoAlcancado_WithStatusCampoAberto_ExpectTrue(){
+		Campo campo = inicializaCampoStatusCampoAberto();
+		assertTrue(campoService.isObjetivoCampoAlcancado(campo));
+	}
+	
+	@Test
+	void isObjetivoCampoAlcancado_WithStatusCampoFechado_ExpectFalse(){
+		assertTrue(central.isStatusCampoFechado());
+		assertFalse(campoService.isObjetivoCampoAlcancado(central));
+	}
+	
+	@Test
+	void isObjetivoCampoAlcancado_WithStatusCampoAbertoEMinadoTrue_ExpectFalse(){
+		Campo campo = inicializaCampoIsMinadoTrue();
+		campo.setStatusCampoAberto();
+		assertTrue(campo.isStatusCampoAberto());
+		assertTrue(campo.isMinado());
+		assertFalse(campoService.isObjetivoCampoAlcancado(campo));
+	}
+	
+	@Test
+	void isObjetivoCampoAlcancado_WithCampoMinadoEMarcadoTrue_ExpectTrue(){
+		Campo campo = inicializaCampoIsMarcadoTrueIsMinadoTrue();
+		assertTrue(campo.isMarcado());
+		assertTrue(campo.isMinado());
+		
+		assertTrue(campoService.isObjetivoCampoAlcancado(campo));
+	}
+	
+	@Test
+	void isObjetivoCampoAlcancado_WithCampoMinadoTrueEMarcadoFalse_ExpectFalse(){
+		Campo campo = inicializaCampoIsMinadoTrue();
+		assertFalse(campo.isMarcado());
+		assertTrue(campo.isMinado());
+		
+		assertFalse(campoService.isObjetivoCampoAlcancado(campo));
+	}
+	
+	@Test
+	void reiniciarCampo_WithStatusCampoAberto_ExpectStatusCampoFechado(){
+		Campo campo = inicializaCampoStatusCampoAberto();
+		assertTrue(campo.isStatusCampoAberto());
+
+		campoService.reiniciarCampo(campo);
+		assertTrue(campo.isStatusCampoFechado());
+	}
+	
+	@Test
+	void reiniciarCampo_WithCampoMinadoTrue_ExpectCampoMinadoFalse(){
+		Campo campo = inicializaCampoIsMinadoTrue();
+		assertTrue(campo.isMinado());
+
+		campoService.reiniciarCampo(campo);
+		assertFalse(campo.isMinado());
+	}
+	
+	@Test
+	void reiniciarCampo_WithCampoMarcadoTrue_ExpectCampoMarcadoFalse(){
+		Campo campo = inicializaCampoIsMarcadoTrue();
+		assertTrue(campo.isMarcado());
+
+		campoService.reiniciarCampo(campo);
+		assertFalse(campo.isMarcado());
+	}
+	
+	@Test
+	void reiniciarCampo_WithCampoMinadoEMarcadoTrue_ExpectCampoMinadoEMarcadoFalse(){
+		Campo campo = inicializaCampoIsMarcadoTrueIsMinadoTrue();
+		assertTrue(campo.isMinado());
+		assertTrue(campo.isMarcado());
+
+		campoService.reiniciarCampo(campo);
+		assertFalse(campo.isMinado());
+		assertFalse(campo.isMarcado());
+	}
+	
+	@Test
+	void getQtdMinasVizinhanca_WithUmVizinhoMinado_ExpectResultUm(){
+		/*C(2, 3*/
+		
+		/*CM*/
+		Campo vizinhoDireitaMinado = inicializaCampoIsMinadoTrue(2, 4);
+		assertTrue(vizinhoDireitaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDireitaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 1);
+		campoService.reiniciarCampo(vizinhoDireitaMinado);
+		
+		/*MC*/
+		Campo vizinhoEsquerdaMinado = inicializaCampoIsMinadoTrue(2, 2);
+		assertTrue(vizinhoEsquerdaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoEsquerdaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 1);
+		campoService.reiniciarCampo(vizinhoEsquerdaMinado);
+		
+		/* M
+		 * C*/
+		Campo vizinhoCimaMinado = inicializaCampoIsMinadoTrue(1, 3);
+		assertTrue(vizinhoCimaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoCimaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 1);
+		campoService.reiniciarCampo(vizinhoCimaMinado);
+		
+		/* C
+		 * M*/
+		Campo vizinhoBaixoMinado = inicializaCampoIsMinadoTrue(3, 3);
+		assertTrue(vizinhoBaixoMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoBaixoMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 1);
+		campoService.reiniciarCampo(vizinhoBaixoMinado);
+		
+		/*M 
+		 * C
+		 */
+		Campo vizinhoDiagonalSuperiorEsquerdaMinado = inicializaCampoIsMinadoTrue(1, 2);
+		assertTrue(vizinhoDiagonalSuperiorEsquerdaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDiagonalSuperiorEsquerdaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 1);
+		campoService.reiniciarCampo(vizinhoDiagonalSuperiorEsquerdaMinado);
+		
+		/* M
+		 *C
+		 */
+		Campo vizinhoDiagonalSuperiorDireitaMinado = inicializaCampoIsMinadoTrue(1, 4);
+		assertTrue(vizinhoDiagonalSuperiorDireitaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDiagonalSuperiorDireitaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 1);
+		campoService.reiniciarCampo(vizinhoDiagonalSuperiorDireitaMinado);
+		
+		/* C
+		 *M
+		 */
+		Campo vizinhoDiagonalInferiorEsquerdaMinado = inicializaCampoIsMinadoTrue(3, 2);
+		assertTrue(vizinhoDiagonalInferiorEsquerdaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDiagonalInferiorEsquerdaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 1);
+		campoService.reiniciarCampo(vizinhoDiagonalInferiorEsquerdaMinado);
+		
+		/* C
+		 *  M
+		 */
+		Campo vizinhoDiagonalInferiorDireitaMinado = inicializaCampoIsMinadoTrue(3, 4);
+		assertTrue(vizinhoDiagonalInferiorDireitaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDiagonalInferiorDireitaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 1);
+		campoService.reiniciarCampo(vizinhoDiagonalInferiorDireitaMinado);
+	}
+	
+	@Test
+	void getQtdMinasVizinhanca_WithVariosMinados_ExpectCorrectResult(){
+		/*C(2, 3*/
+		
+		/*CM*/
+		Campo vizinhoDireitaMinado = inicializaCampoIsMinadoTrue(2, 4);
+		assertTrue(vizinhoDireitaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDireitaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 1);
+		
+		/*MC*/
+		Campo vizinhoEsquerdaMinado = inicializaCampoIsMinadoTrue(2, 2);
+		assertTrue(vizinhoEsquerdaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoEsquerdaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 2);
+		
+		/* M
+		 * C*/
+		Campo vizinhoCimaMinado = inicializaCampoIsMinadoTrue(1, 3);
+		assertTrue(vizinhoCimaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoCimaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 3);
+		
+		/* C
+		 * M*/
+		Campo vizinhoBaixoMinado = inicializaCampoIsMinadoTrue(3, 3);
+		assertTrue(vizinhoBaixoMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoBaixoMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 4);
+		
+		/*M 
+		 * C
+		 */
+		Campo vizinhoDiagonalSuperiorEsquerdaMinado = inicializaCampoIsMinadoTrue(1, 2);
+		assertTrue(vizinhoDiagonalSuperiorEsquerdaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDiagonalSuperiorEsquerdaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 5);
+		
+		/* M
+		 *C
+		 */
+		Campo vizinhoDiagonalSuperiorDireitaMinado = inicializaCampoIsMinadoTrue(1, 4);
+		assertTrue(vizinhoDiagonalSuperiorDireitaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDiagonalSuperiorDireitaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 6);
+		
+		/* C
+		 *M
+		 */
+		Campo vizinhoDiagonalInferiorEsquerdaMinado = inicializaCampoIsMinadoTrue(3, 2);
+		assertTrue(vizinhoDiagonalInferiorEsquerdaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDiagonalInferiorEsquerdaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 7);
+		
+		/* C
+		 *  M
+		 */
+		Campo vizinhoDiagonalInferiorDireitaMinado = inicializaCampoIsMinadoTrue(3, 4);
+		assertTrue(vizinhoDiagonalInferiorDireitaMinado.isMinado());
+		campoService.adicionaVizinho(central, vizinhoDiagonalInferiorDireitaMinado);
+		assertEquals(campoService.getQtdMinasVizinhanca(central), 8);
+	}
+	
+	@Test
+	void abrirCampoSelecionado_ExpectCampoAbertoOrExplosaoException(){
+		try {
+			campoService.abrirCampoSelecionado(3, 3, tabuleiro.getCampos());
+			Campo campo = this.getCampoPelaCoordenada(3, 3, tabuleiro.getCampos());
+			assertTrue(campo.isStatusCampoAberto());
+		}catch(Exception e){
+			assertEquals(ExplosaoException.class, e.getClass());
+		}
+	}	
+	
+	@Test
+	void marcarCampoSelecionado_ExpectCampoMarcado(){
+		campoService.marcarCampoSelecionado(4, 4, tabuleiro.getCampos());
+		Campo campo = this.getCampoPelaCoordenada(4, 4, tabuleiro.getCampos());
+		assertTrue(campo.isMarcado());
+	}
+	
+	private Campo getCampoPelaCoordenada(int linha, int coluna, List<Campo> campos) {
+		Campo campo = campos.parallelStream()
+			.filter(c -> c.getLinha() == linha && c.getColuna() == coluna)
+			.findFirst().get();
+		
+		return campo;
+	}
+	
 	private Campo inicializaCampoIsMarcadoTrue() {
 		Campo campo = new Campo(5, 8);
 		campoService.alterarMarcacao(campo);
+		return campo;
+	}
+	
+	private Campo inicializaCampoIsMinadoTrue(int linha, int coluna) {
+		Campo campo = new Campo(linha, coluna);
+		campoService.minarCampo(campo);
 		return campo;
 	}
 	

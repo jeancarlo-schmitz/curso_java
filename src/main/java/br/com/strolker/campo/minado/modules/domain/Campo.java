@@ -3,6 +3,8 @@ package main.java.br.com.strolker.campo.minado.modules.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.br.com.strolker.campo.minado.modules.service.CampoService;
+
 public class Campo {
 	private final int linha;
 	private final int coluna;
@@ -35,6 +37,14 @@ public class Campo {
 		this.statusCampo = statusCampo;
 	}
 
+	public void setStatusCampoAberto() {
+		this.statusCampo = StatusCampo.ABERTO;
+	}
+	
+	public void setStatusCampoFechado() {
+		this.statusCampo = StatusCampo.FECHADO;
+	}
+
 	public boolean isMarcado() {
 		return marcado;
 	}
@@ -65,5 +75,19 @@ public class Campo {
 	
 	public boolean isStatusCampoFechado() {
 		return statusCampo.equals(StatusCampo.FECHADO);
+	}
+	
+	public String toString() {
+		CampoService campoService = new CampoService();
+		if(marcado) {
+			return "x";
+		}else if(isStatusCampoAberto() && minado) {
+			return "*";
+		}else if(isStatusCampoAberto() && campoService.getQtdMinasVizinhanca(this) > 0) {
+			return Long.toString(campoService.getQtdMinasVizinhanca(this));
+		}else if(isStatusCampoAberto()) {
+			return " ";
+		}
+		return "?";
 	}
 }
