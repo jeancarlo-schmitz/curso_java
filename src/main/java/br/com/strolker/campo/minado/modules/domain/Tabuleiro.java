@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.br.com.strolker.campo.minado.modules.service.TabuleiroService;
+import main.java.br.com.strolker.campo.minado.modules.service.utils.ColorindoConsole;
 
 public class Tabuleiro {
 	
@@ -49,16 +50,40 @@ public class Tabuleiro {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append("  ");
+		if(colunas > 10) {
+			sb.append(" ");
+		}
+		for (int coluna = 0; coluna < colunas; coluna++) {
+			if(colunas > 10 && coluna < 10) {
+				sb.append(" ");
+			}
+			sb.append(" ");
+			sb.append(coluna);
+			sb.append(" ");
+		}
+		sb.append("\n");
 		
 		int index = 0;
 		for (int linha = 0; linha < linhas; linha++) {
-			for (int coluna = 0; coluna < colunas; coluna++) {
+			sb.append(linha);
+			sb.append(" ");
+			if(linhas > 10 && linha < 10) {
 				sb.append(" ");
+			}
+			for (int coluna = 0; coluna < colunas; coluna++) {
+				
+//				sb.append(ColorindoConsole.ANSI_WHITE_BACKGROUND + ColorindoConsole.ANSI_BLACK + " ");
+
+				sb.append(" ");
+				if(linhas > 10) {
+					sb.append(" ");
+				}
 				sb.append(campos.get(index));
 				sb.append(" ");
 				index++;
 			}
-			sb.append("\n");
+			sb.append(ColorindoConsole.ANSI_RESET + "\n");
 		}
 		
 		return sb.toString();

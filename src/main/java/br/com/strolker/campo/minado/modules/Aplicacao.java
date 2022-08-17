@@ -1,19 +1,20 @@
 package main.java.br.com.strolker.campo.minado.modules;
 
+import main.java.br.com.strolker.campo.minado.modules.domain.Configuracao;
 import main.java.br.com.strolker.campo.minado.modules.domain.Tabuleiro;
-import main.java.br.com.strolker.campo.minado.modules.service.CampoService;
+import main.java.br.com.strolker.campo.minado.modules.service.ConfiguracaoService;
+import main.java.br.com.strolker.campo.minado.modules.view.TabuleiroConsole;
 
 public class Aplicacao {
-	
+  
 	public static void main(String[] args) {
-		CampoService campoService = new CampoService(); 
-		Tabuleiro tabuleiro = new Tabuleiro(1, 1, 1);
-		campoService.abrirCampoSelecionado(3, 3, tabuleiro.getCampos());
-		campoService.marcarCampoSelecionado(4, 4, tabuleiro.getCampos());
-		campoService.marcarCampoSelecionado(4, 5, tabuleiro.getCampos());
+		ConfiguracaoService.setConfiguracoesJogo();
+		int qtdLinhas = Configuracao.qtdLinhas;
+		int qtdColunas = Configuracao.qtdColunas;
+		int qtdBombas = Configuracao.qtdBombas;
 		
-		
-		System.out.println(tabuleiro.toString());
+		Tabuleiro tabuleiro = new Tabuleiro(qtdLinhas, qtdColunas, qtdBombas);
+		new TabuleiroConsole(tabuleiro);
 	}
 
 }

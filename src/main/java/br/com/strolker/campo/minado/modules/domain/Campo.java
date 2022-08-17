@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.br.com.strolker.campo.minado.modules.service.CampoService;
+import main.java.br.com.strolker.campo.minado.modules.service.utils.ColorindoConsole;
 
 public class Campo {
 	private final int linha;
@@ -80,11 +81,57 @@ public class Campo {
 	public String toString() {
 		CampoService campoService = new CampoService();
 		if(marcado) {
-			return "x";
+			return ColorindoConsole.ANSI_RED + "X" + ColorindoConsole.ANSI_RESET;
 		}else if(isStatusCampoAberto() && minado) {
-			return "*";
+			return ColorindoConsole.ANSI_YELLOW + ColorindoConsole.ANSI_NEGRITO + "*" + ColorindoConsole.ANSI_RESET;
 		}else if(isStatusCampoAberto() && campoService.getQtdMinasVizinhanca(this) > 0) {
-			return Long.toString(campoService.getQtdMinasVizinhanca(this));
+			String qtdMinasVizinhanca = Long.toString(campoService.getQtdMinasVizinhanca(this));
+			StringBuilder sb = new StringBuilder();
+			switch (qtdMinasVizinhanca) {
+				case "1": {
+					sb.append(ColorindoConsole.ANSI_YELLOW);
+					sb.append(qtdMinasVizinhanca);
+					break;
+				}
+				case "2": {
+					sb.append(ColorindoConsole.ANSI_BLUE);
+					sb.append(qtdMinasVizinhanca);
+					break;
+				}
+				case "3": {
+					sb.append(ColorindoConsole.ANSI_GREEN);
+					sb.append(qtdMinasVizinhanca);
+					break;
+				}
+				case "4": {
+					sb.append(ColorindoConsole.ANSI_PURPLE);
+					sb.append(qtdMinasVizinhanca);
+					break;
+				}
+				case "5": {
+					sb.append(ColorindoConsole.ANSI_CYAN);
+					sb.append(qtdMinasVizinhanca);
+					break;
+				}
+				case "6": {
+					sb.append(ColorindoConsole.ANSI_RED);
+					sb.append(qtdMinasVizinhanca);
+					break;
+				}
+				case "7": {
+					sb.append(ColorindoConsole.ANSI_BLUE);
+					sb.append(qtdMinasVizinhanca);
+					break;
+				}
+				case "8": {
+					sb.append(ColorindoConsole.ANSI_PURPLE);
+					sb.append(qtdMinasVizinhanca);
+					break;
+				}
+			}
+
+			sb.append(ColorindoConsole.ANSI_RESET);
+			return sb.toString();
 		}else if(isStatusCampoAberto()) {
 			return " ";
 		}
