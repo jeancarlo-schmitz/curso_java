@@ -63,6 +63,12 @@ public class CampoService {
 			  .ifPresent(campo -> this.alterarMarcacao(campo));
 	}
 	
+	public void abrirTodosOsCamposMinados(List<Campo> campos) {
+		campos.parallelStream()
+		  .filter(campo -> campo.isMinado())
+		  .forEach(campo -> campo.setStatusCampoAberto());
+	}
+	
 	public void minarCampo(Campo campo) {
 		if(campo.isStatusCampoFechado()) {
 			campo.setMinado(true);
