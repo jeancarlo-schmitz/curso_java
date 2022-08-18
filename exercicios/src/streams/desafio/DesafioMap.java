@@ -1,4 +1,4 @@
-package Streams.desafio;
+package streams.desafio;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,6 +1,6 @@
 package fundamentos.desafios;
 
-public class TesteFor {
+public class TesteFor_meu {
 
 	int a = 3;
 	public static void main(String[] args) {
@@ -11,14 +11,14 @@ public class TesteFor {
 //				System.out.println();
 //			}
 
-//		String valor = "";
-//		for (;!valor.equalsIgnoreCase("#####");) {
-//			valor += "#";
-//			System.out.println(valor);
-//		}
-//		System.out.println("Fim");
+		String valor = "";
+		for (;!valor.equalsIgnoreCase("#####");) {
+			valor += "#";
+			System.out.println(valor);
+		}
+		System.out.println("Fim");
 
-		TesteFor teste = new TesteFor();
+		TesteFor_meu teste = new TesteFor_meu();
 		System.out.println(teste.a);
 //		String s = "teste";
 //		for (char c: s.toCharArray()) {

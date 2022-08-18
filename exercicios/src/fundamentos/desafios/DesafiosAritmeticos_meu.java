@@ -1,6 +1,6 @@
 package fundamentos.desafios;
 
-public class DesafiosAritmeticos {
+public class DesafiosAritmeticos_meu {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

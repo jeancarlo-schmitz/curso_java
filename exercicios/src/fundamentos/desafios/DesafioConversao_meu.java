@@ -2,7 +2,7 @@ package fundamentos.desafios;
 
 import java.util.Scanner;
 
-public class DesafioConversao {
+public class DesafioConversao_meu {
 
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);

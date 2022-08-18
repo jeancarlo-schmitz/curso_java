@@ -1,10 +1,10 @@
-package Streams.match;
+package streams.match;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import Streams.Aluno;
+import streams.Aluno;
 
 public class Match {
 

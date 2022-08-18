@@ -1,11 +1,11 @@
-package Streams.filter;
+package streams.filter;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import Streams.Aluno;
+import streams.Aluno;
 
 public class Filter {
 

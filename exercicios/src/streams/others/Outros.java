@@ -1,9 +1,9 @@
-package Streams.others;
+package streams.others;
 
 import java.util.Arrays;
 import java.util.List;
 
-import Streams.Aluno;
+import streams.Aluno;
 
 public class Outros {
 

@@ -1,4 +1,4 @@
-package Streams.reduce;
+package streams.reduce;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import Streams.Aluno;
-import Streams.Media;
+import streams.Aluno;
+import streams.Media;
 
 public class Reduce2 {
 	public static void main(String[] args) {

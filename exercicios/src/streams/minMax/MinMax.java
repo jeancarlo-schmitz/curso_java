@@ -1,10 +1,10 @@
-package Streams.minMax;
+package streams.minMax;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import Streams.Aluno;
+import streams.Aluno;
 
 public class MinMax {
 
