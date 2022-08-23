@@ -1,13 +1,2 @@
 .idea
 .metadata/
-
-https://
-git remote set-url origin https://jeancarlo-schmitz:@
-git push https://<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>@ggithub.com/jeancarlo-schmitz/curso_java.git
-git push https://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@github.com/jeancarlo-schmitz/campo-minado.git -u origin main
-
-git config --local user.signingkey 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
-
-
-
-jean.carlo@pol.adv.br

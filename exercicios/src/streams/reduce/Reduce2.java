@@ -28,7 +28,7 @@ public class Reduce2 {
 		
 		BinaryOperator<Media> combinarMedia = (m1, m2) -> Media.combinar(m1, m2);
 		
-		//alunos.stream().filter(aprovados).map(notas).reduce(soma).ifPresent(System.out::println);
+		alunos.stream().filter(aprovados).map(notas).reduce(soma).ifPresent(System.out::println);
 		
 		/*Pegar a média*/
 		Media resultado = alunos.stream()
