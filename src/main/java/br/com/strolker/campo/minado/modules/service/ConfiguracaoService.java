@@ -2,7 +2,7 @@ package main.java.br.com.strolker.campo.minado.modules.service;
 
 import java.util.Scanner;
 
-import main.java.br.com.strolker.campo.minado.modules.domain.Configuracao;
+import main.java.br.com.strolker.campo.minado.modules.config.Configuracao;
 import main.java.br.com.strolker.campo.minado.modules.exception.DefaultConfigException;
 import main.java.br.com.strolker.campo.minado.modules.service.utils.ConfiguracaoUtils;
 

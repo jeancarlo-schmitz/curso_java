@@ -1,10 +1,14 @@
-package main.java.br.com.strolker.campo.minado.modules.domain;
+package main.java.br.com.strolker.campo.minado.modules.config;
 
 public class Configuracao {
 
 	public static int qtdLinhas;
 	public static int qtdColunas;
 	public static int qtdBombas;
+	public static String titleJogo = "Campo Minado";
+	public static int width = 690;
+	public static int height = 438;
+	public static String modoJogo = "interface";
 	public static int qtdMaximaLinhas = 20;
 	public static int qtdMaximaColunas = 20;
 	public static int qtdMaximaBombas;
@@ -24,4 +28,7 @@ public class Configuracao {
 		return qtdMaximaBombas;
 	}
 	
+	public static boolean isInterface() {
+		return modoJogo.equals("interface");
+	}
 }

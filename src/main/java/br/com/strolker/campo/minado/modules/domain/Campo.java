@@ -3,8 +3,9 @@ package main.java.br.com.strolker.campo.minado.modules.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.br.com.strolker.campo.minado.modules.observer.CampoObserver;
 import main.java.br.com.strolker.campo.minado.modules.service.CampoService;
-import main.java.br.com.strolker.campo.minado.modules.service.utils.ColorindoConsole;
+import main.java.br.com.strolker.campo.minado.modules.service.utils.CoresPadrao;
 
 public class Campo {
 	private final int linha;
@@ -15,6 +16,7 @@ public class Campo {
 	private boolean minado;
 
 	private List<Campo> vizinhanca = new ArrayList<>();
+	private List<CampoObserver> observers = new ArrayList<>();
 	
 	public Campo(int linha, int coluna){
 		this.linha = linha;
@@ -28,6 +30,14 @@ public class Campo {
 
 	public void setVizinhanca(List<Campo> vizinhanca) {
 		this.vizinhanca = vizinhanca;
+	}
+	
+	public List<CampoObserver> getObservers() {
+		return observers;
+	}
+
+	public void addObserver(CampoObserver observer) {
+		this.observers.add(observer);
 	}
 	
 	public StatusCampo getStatusCampo() {
@@ -81,56 +91,56 @@ public class Campo {
 	public String toString() {
 		CampoService campoService = new CampoService();
 		if(marcado) {
-			return ColorindoConsole.ANSI_RED + "X" + ColorindoConsole.ANSI_RESET;
+			return CoresPadrao.ANSI_RED + "X" + CoresPadrao.ANSI_RESET;
 		}else if(isStatusCampoAberto() && minado) {
-			return ColorindoConsole.ANSI_YELLOW + ColorindoConsole.ANSI_NEGRITO + "*" + ColorindoConsole.ANSI_RESET;
+			return CoresPadrao.ANSI_YELLOW + CoresPadrao.ANSI_NEGRITO + "*" + CoresPadrao.ANSI_RESET;
 		}else if(isStatusCampoAberto() && campoService.getQtdMinasVizinhanca(this) > 0) {
 			String qtdMinasVizinhanca = Long.toString(campoService.getQtdMinasVizinhanca(this));
 			StringBuilder sb = new StringBuilder();
 			switch (qtdMinasVizinhanca) {
 				case "1": {
-					sb.append(ColorindoConsole.ANSI_YELLOW);
+					sb.append(CoresPadrao.ANSI_YELLOW);
 					sb.append(qtdMinasVizinhanca);
 					break;
 				}
 				case "2": {
-					sb.append(ColorindoConsole.ANSI_BLUE);
+					sb.append(CoresPadrao.ANSI_BLUE);
 					sb.append(qtdMinasVizinhanca);
 					break;
 				}
 				case "3": {
-					sb.append(ColorindoConsole.ANSI_GREEN);
+					sb.append(CoresPadrao.ANSI_GREEN);
 					sb.append(qtdMinasVizinhanca);
 					break;
 				}
 				case "4": {
-					sb.append(ColorindoConsole.ANSI_PURPLE);
+					sb.append(CoresPadrao.ANSI_PURPLE);
 					sb.append(qtdMinasVizinhanca);
 					break;
 				}
 				case "5": {
-					sb.append(ColorindoConsole.ANSI_CYAN);
+					sb.append(CoresPadrao.ANSI_CYAN);
 					sb.append(qtdMinasVizinhanca);
 					break;
 				}
 				case "6": {
-					sb.append(ColorindoConsole.ANSI_RED);
+					sb.append(CoresPadrao.ANSI_RED);
 					sb.append(qtdMinasVizinhanca);
 					break;
 				}
 				case "7": {
-					sb.append(ColorindoConsole.ANSI_BLUE);
+					sb.append(CoresPadrao.ANSI_BLUE);
 					sb.append(qtdMinasVizinhanca);
 					break;
 				}
 				case "8": {
-					sb.append(ColorindoConsole.ANSI_PURPLE);
+					sb.append(CoresPadrao.ANSI_PURPLE);
 					sb.append(qtdMinasVizinhanca);
 					break;
 				}
 			}
 
-			sb.append(ColorindoConsole.ANSI_RESET);
+			sb.append(CoresPadrao.ANSI_RESET);
 			return sb.toString();
 		}else if(isStatusCampoAberto()) {
 			return " ";

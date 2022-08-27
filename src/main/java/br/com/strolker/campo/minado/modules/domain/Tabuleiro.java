@@ -2,19 +2,25 @@ package main.java.br.com.strolker.campo.minado.modules.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
+import main.java.br.com.strolker.campo.minado.modules.observer.CampoEvent;
+import main.java.br.com.strolker.campo.minado.modules.observer.CampoObserver;
+import main.java.br.com.strolker.campo.minado.modules.service.CampoService;
 import main.java.br.com.strolker.campo.minado.modules.service.TabuleiroService;
-import main.java.br.com.strolker.campo.minado.modules.service.utils.ColorindoConsole;
+import main.java.br.com.strolker.campo.minado.modules.service.utils.CoresPadrao;
 
-public class Tabuleiro {
+public class Tabuleiro implements CampoObserver {
 	
 	TabuleiroService tabuleiroService;
+	CampoService campoService = new CampoService();
 	
 	private int linhas;
 	private int colunas;
 	private int qtdMinas;
 	
 	private final List<Campo> campos = new ArrayList<>();
+	private final List<Consumer<ResultadoEvento>> observers = new ArrayList<>();
 
 	public Tabuleiro(int linhas, int colunas, int qtdMinas) {
 		this.linhas = linhas;
@@ -26,6 +32,14 @@ public class Tabuleiro {
 		tabuleiroService.gerarCampos(linhas, colunas, this);
 		tabuleiroService.associarVizinhos(campos);
 		tabuleiroService.sortearMinas(qtdMinas, campos);
+	}
+	
+	public List<Consumer<ResultadoEvento>> getObservers() {
+		return observers;
+	}
+
+	public void addObserver(Consumer<ResultadoEvento> observer) {
+		this.observers.add(observer);
 	}
 
 	public int getLinhas() {
@@ -46,6 +60,16 @@ public class Tabuleiro {
 
 	public List<Campo> getCampos() {
 		return campos;
+	}
+	
+	@Override
+	public void eventoOcorreu(Campo campo, CampoEvent event) {
+		if(event.equals(CampoEvent.EXPLODIR)) {
+			campoService.abrirTodosOsCamposMinados(campos);
+			tabuleiroService.notificarObservadores(this, false);
+		} else if(tabuleiroService.isObjetivoJogoAlcancado(campos)) {
+			tabuleiroService.notificarObservadores(this, true);
+		}
 	}
 
 	public String toString() {
@@ -83,7 +107,7 @@ public class Tabuleiro {
 				sb.append(" ");
 				index++;
 			}
-			sb.append(ColorindoConsole.ANSI_RESET + "\n");
+			sb.append(CoresPadrao.ANSI_RESET + "\n");
 		}
 		
 		return sb.toString();
