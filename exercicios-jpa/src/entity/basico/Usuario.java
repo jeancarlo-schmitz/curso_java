@@ -1,4 +1,4 @@
-package entity;
+package entity.basico;
 
 import javax.persistence.Entity;
 

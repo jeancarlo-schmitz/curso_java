@@ -7,9 +7,21 @@
     <persistence-unit name="exercicios-jpa">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         
-<!--         <mapping-file>META-INF/consultas.xml</mapping-file> -->
+        <mapping-file>META-INF/consultas.xml</mapping-file>
         
-        <class>entity.Usuario</class>
+        <class>entity.basico.Usuario</class>
+        <class>entity.basico.Produto</class>
+        <class>entity.umPraUm.Cliente</class>
+        <class>entity.umPraUm.Assento</class>
+        <class>entity.umPraMuitos.Pedido</class>
+        <class>entity.umPraMuitos.ItemPedido</class>
+        <class>entity.muitosPraMuito.Tio</class>
+        <class>entity.muitosPraMuito.Sobrinho</class>
+        <class>entity.muitosPraMuito.Filme</class>
+        <class>entity.muitosPraMuito.Ator</class>
+        <class>entity.composicao.Funcionario</class>
+        <class>entity.composicao.Fornecedor</class>
+        <class>entity.composicao.Endereco</class>
         
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
