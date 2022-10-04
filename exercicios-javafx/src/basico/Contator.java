@@ -55,6 +55,7 @@ public class Contator extends Application {
 	private void adicionaAcaoBotaoDecremento(Button botaoDecremento, Label labelNumero) {
 		botaoDecremento.setOnAction(e -> {
 			contador--;
+			this.aplicaEstiloLabelNumero(labelNumero);
 			labelNumero.setText(Integer.toString(contador));
 		});
 		
@@ -63,8 +64,24 @@ public class Contator extends Application {
 	private void adicionaAcaoBotaoIncremento(Button botaoIncremento, Label labelNumero) {
 		botaoIncremento.setOnAction(e -> {
 			contador++;
+			this.aplicaEstiloLabelNumero(labelNumero);
 			labelNumero.setText(Integer.toString(contador));
 		});
+	}
+
+	private void aplicaEstiloLabelNumero(Label labelNumero) {
+		this.removeCores(labelNumero);
+		if(contador > 0) {
+			labelNumero.getStyleClass().add("verde");
+		}else if(contador < 0) {
+			labelNumero.getStyleClass().add("vermelha");
+		}
+	}
+	
+	private void removeCores(Label labelNumero) {
+		labelNumero.getStyleClass().remove("verde");
+		labelNumero.getStyleClass().remove("branco");
+		labelNumero.getStyleClass().remove("vermelha");
 	}
 
 	public static void main(String[] args) {
